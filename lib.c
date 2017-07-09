@@ -9,6 +9,7 @@
 #define PR_LOCKDOWN_MPROT_WX 2
 #define PR_LOCKDOWN_MPROT_STRIP_WX_X 3
 #define PR_LOCKDOWN_MPROT_STRIP_WX_W 4
+#define PR_LOCKDOWN_MPROT_NX_FATAL 5
 
 __attribute__((constructor))
 void activate_MProtect(void) {
@@ -27,6 +28,12 @@ void activate_MProtect(void) {
 #if DISABLE_EXEC_PAGES
     prot = PR_LOCKDOWN_MPROT_STRIP_WX_X;
 #endif
+
+    prctl(PR_LOCKDOWN_MPROT, prot);
+
+    /* Make fetch faults fatal.  */
+
+    prot = PR_LOCKDOWN_MPROT_NX_FATAL;
 
     prctl(PR_LOCKDOWN_MPROT, prot);
 }
