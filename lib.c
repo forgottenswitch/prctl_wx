@@ -4,12 +4,7 @@
 #include <unistd.h>
 #include <sys/prctl.h>
 
-#define PR_LOCKDOWN_MPROT 48
-#define PR_LOCKDOWN_MPROT_X 1
-#define PR_LOCKDOWN_MPROT_WX 2
-#define PR_LOCKDOWN_MPROT_STRIP_WX_X 3
-#define PR_LOCKDOWN_MPROT_STRIP_WX_W 4
-#define PR_LOCKDOWN_MPROT_NX_FATAL 5
+#include <linux/prctl.h>
 
 __attribute__((constructor))
 void activate_MProtect(void) {
