@@ -1,8 +1,9 @@
 A userspace support library for a (custom) PaX patch (tells the kernel to
 activate the restrictions/protections).
 
-This is only a temporary workaround; the proper solution is to patch compiler
-that performs the linking.  Requires dynamic loader that understands
+This is only a temporary workaround; the proper solution is to patch loader and
+the compiler that performs the linking (to handle dynamically and statically
+linked binaries, respectively).  Requires dynamic loader that understands
 `LD_PRELOAD` (as glibc does).
 
 # Installation
