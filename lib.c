@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
 
 #include <unistd.h>
 #include <sys/prctl.h>
@@ -28,7 +29,14 @@ void activate_MProtect(void) {
     prot = PR_LOCKDOWN_MPROT_STRIP_WX_X;
 #endif
 
-    prctl(PR_LOCKDOWN_MPROT, prot);
+    for (;;) {
+        errno = 0;
+        prctl(PR_LOCKDOWN_MPROT, prot);
+        if (errno == EAGAIN || errno == EINTR) {
+            continue;
+        }
+        break;
+    }
 
 #if !ALLOW_FETCH_FAULTS
     /* Make fetch faults fatal.  */
