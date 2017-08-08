@@ -68,3 +68,13 @@ export LD_PRELOAD='/$LIB/libprctl_x.so'
 LD_PRELOAD="$LD_PRELOAD"':/$LIB/libnss_compat.so.2'
 ```
 (with the rest of libraries also possibly in `LD_PRELOAD`).
+
+To show what libraries are not loaded on-demand (and so do not need to be put into the `LD_PRELOAD`):
+```
+# either:
+readelf -a "$(which id)" | grep NEEDED
+# or:
+objdump -x "$(which id)" | grep NEEDED
+
+# The same could be done for shared libraries, but should not be necessary.
+```
