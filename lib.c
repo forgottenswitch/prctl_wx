@@ -6,6 +6,10 @@
 
 #include <linux/prctl.h>
 
+#ifndef ALLOW_FETCH_FAULTS
+#define ALLOW_FETCH_FAULTS 0
+#endif
+
 __attribute__((constructor))
 void activate_MProtect(void) {
     size_t prot;
@@ -26,9 +30,11 @@ void activate_MProtect(void) {
 
     prctl(PR_LOCKDOWN_MPROT, prot);
 
+#if !ALLOW_FETCH_FAULTS
     /* Make fetch faults fatal.  */
 
     prot = PR_LOCKDOWN_MPROT_NX_FATAL;
 
     prctl(PR_LOCKDOWN_MPROT, prot);
+#endif
 }

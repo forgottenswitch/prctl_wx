@@ -27,6 +27,23 @@ export LD_PRELOAD='/$LIB/libprctl_wx.so'
 And then you need to run applications that could need WX pages (Qemu 2.9, Wine,
 etc.) with an empty `LD_PRELOAD`.
 
+## Debuggers
+The `libprctl_wx` makes instruction fetch faults fatal, which breaks debuggers'
+ability to call debugee's functions. To allow the faults while still
+disallowing WX pages, use `libprctl_wxd`.
+Example:
+```
+gdb_wxd() {
+  # the nested shell is for LD_PRELOAD change not to persist
+  (
+    export LD_PRELOAD='/$LIB/libprctl_wxd.so'
+    exec gdb "$@"
+  )
+}
+
+gdb_wxd /usr/bin/id
+```
+
 ## Stricter mode
 For a mode that disallows `dlopen`, use `/$LIB/libprctl_x.so` instead.
 

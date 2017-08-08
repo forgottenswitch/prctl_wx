@@ -32,3 +32,13 @@ prctl_x = shared_library(
     ],
 )
 
+prctl_wxd = shared_library(
+    'prctl_wxd',
+    srcs,
+    install: true,
+    dependencies: deps,
+    c_args: [
+        '-DALLOW_FETCH_FAULTS=1',
+    ],
+)
+
